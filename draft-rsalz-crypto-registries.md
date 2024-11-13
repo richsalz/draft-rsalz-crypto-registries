@@ -263,7 +263,7 @@ continue to provide the expected level of security.
 
 # IANA Considerations
 
-This document is entirely about best practices for IANA-maintained
+This document is entirely about best practices for defining IANA-maintained
 cryptographic registries.
 It does not define any new registries but provides guidance to
 those who need to do so.
