@@ -158,7 +158,7 @@ If a name is not inherently unique, the defining WG MAY wish to set
 aside a specific range or values for "Experimental or Private Use." It
 does not seem necessary to separate "Experimental" from the "Private
 Use" concept.  An example of private string identifiers from
-{{!RFC6838}}, Sections 3.2 and 3.4, are the previxes "vnd." and "x.",
+{{!RFC6838, Sections 3.2 and 3.4}} are the prefixes "vnd." and "x.",
 respectively.
 
 Another reason for reserved values is for "greasing" the protocol,
