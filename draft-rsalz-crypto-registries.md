@@ -3,6 +3,7 @@ title: A Template for IANA Cryptographic Registries
 abbrev: IANA Crypto Registries
 docname: draft-rsalz-crypto-registries-latest
 category: bcp
+stream: IETF
 v: 3
 
 ipr: trust200902
@@ -10,8 +11,8 @@ area: "Security"
 workgroup: TBD
 keyword: Internet-Draft
 venue:
-  group: "Transport Layer Security"
-  type: "Working Group"
+  group: "SAAG"
+  type: "Security Area"
   mail: "saag@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/saag/"
   github: "rsalz/draft-rsalz-crypto-registries"
@@ -30,430 +31,241 @@ author:
 normative:
 
 informative:
+  JOSEREG:
+    title: "JSON Web Signature and Encryption Header Parameters"
+    target: "https://www.iana.org/assignments/jose/jose.xhtml#web-signature-encryption-header-parameters"
+  NTPREG:
+    title: "Network Time Protocol (NTP) Parameters"
+    target: "https://www.iana.org/assignments/ntp-parameters/ntp-parameters.xhtml#ntp-parameters-3"
+  TLSREG:
+    title: "TLS Cipher Suites"
+    target: "https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#tls-parameters-4"
+
 
 --- abstract
 
-This document updates the changes to TLS and DTLS IANA registries
-made in RFC 8447. It adds a new value "D" for discouraged
-to the recommended column of the selected TLS registries and
-adds a "Comments" column to all active registries.
+This document provides recommendations for how IETF Working Groups
+should create IANA registries that are related to cryptographic
+algorithms.
+It is based on the lessons learned from the TLS registries over
+the years.
 
 --- middle
 
 # Introduction
 
-This document instructs IANA to make changes to a number of the IANA
-registries related to Transport Layer Security (TLS) and Datagram
-Transport Layer Security (DTLS). These changes update the changes made
-in {{!RFC8447}}.
+This document provides recommendations for how IETF Working Groups
+should create IANA registries that are related to cryptographic
+algorithms.
+It is based on the lessons learned from the TLS registries over
+the years as described in {{?RFC8447}} and {{?I-D.draft-ietf-tls-rfc8447bis}}.
 
-<aside markdown="block">
-  NOTE for IANA: This document specifies changes to the registry to update
-  the changes made in {{RFC8447}}.
-</aside>
+The guidance here can be summarized as follows:
 
-This specification updates the "Recommended" column in TLS
-registries to define a third value "D" for items that are discouraged.
+1. Each registry SHOULD be "Specification Required," as defined
+in {{!RFC8126, Section 4.6}}.
+
+1. If required by the "Value" format (see {{value-column}}), consider reserving
+a section for Private or Experimental Use.
+
+1. Each registry SHOULD have a "Recommended" column (see {{recommended-column}}).
+
+1. Each registry SHOULD have a "Comments" column (see {{comments-column}}).
+
+1. Most registries will need additional columns.
 
 # Terminology
 
 {::boilerplate bcp14-tagged}
 
-# Adding "Recommended" Column
-
-The instructions in this document update the Recommended column,
-originally added in {{RFC8447}} to add a third value, "D",
-indicating that a value is "Discouraged". The permitted values
-are:
-
-Y:
-: Indicates that the IETF has consensus that the
-    item is RECOMMENDED. This only means that the associated
-    mechanism is fit for the purpose for which it was defined.
-    Careful reading of the documentation for the mechanism is
-    necessary to understand the applicability of that mechanism.
-    The IETF could recommend mechanisms that have limited
-    applicability, but will provide applicability statements that
-    describe any limitations of the mechanism or necessary constraints
-    on its use.
-
-N:
-: Indicates that the item has not been evaluated by
-    the IETF and that the IETF has made no statement about the
-    suitability of the associated mechanism. This does not necessarily
-    mean that the mechanism is flawed, only that no consensus exists.
-    The IETF might have consensus to leave an items marked as "N" on
-    the basis of it having limited applicability or usage constraints.
-
-D:
-: Indicates that the item is discouraged. This marking could be used to identify
-    mechanisms that might result in problems if they are used, such as
-    a weak cryptographic algorithm or a mechanism that might cause
-    interoperability problems in deployment. Implementers SHOULD
-    consult the linked references associated with the item to
-    determine the conditions under which it SHOULD NOT or MUST NOT be used.
-
-Setting a value to "Y" or "D" in the "Recommended" column requires IETF Standards
-Action {{!RFC8126}}.  Any state transition to or from a "Y" or "D" value requires
-IESG Approval. Not all items defined in Standards Track RFCs need to be set
-to "Y" or "D". Any item not otherwise specified is set to "N". The column is
-blank for values that are unassigned or reserved unless specifically set.
-
-## Recommended Note {#rec-note}
-
-Existing registries have a note on the meaning of the recommended column. For the
-registries discussed in the subsequent sections this note is updated
-with a sentence describing the "D" vaue as follows:
-
-Note:
-
-: If "Recommended" column is set to "N", it does not necessarily mean
-that it is flawed; rather, it indicates that the item either has not
-been through the IETF consensus process, has limited applicability, or
-is intended only for specific use cases.  If the "Recommended" column
-is set to "D" the item is discouraged and SHOULD NOT or MUST NOT be used.
-
-# TLS ExtensionType Values
-
-In order to refect the changes in the Recommended column allocation,
-IANA SHALL update the TLS ExtensionType Values registry as follows:
-
-- Change the registration procedure to:
-
-~~~
-    Values with the first byte in the range 0-254 (decimal) are assigned
-    via Specification Required [RFC8126].  Values with the first byte
-    255 (decimal) are reserved for Private Use [RFC8126].  Setting a
-    "Recommended" column value to "Y" or "D" requires Standards Action [RFC8126].
-    Any state transition to or from a "Y" or "D" value requires
-    IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the "Recommended" column with the changes as listed below.  Entries
-  keep their existing "Y" and "N" entries except for the entries in following table.
-  A reference to this document SHALL be added to these entries.
-
-|Value | Extension                   | Recommended |
-|:-----|:----------------------------|------------:|
-|4  |truncated_hmac                  |         D |
-...
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-
-
-# TLS Cipher Suites Registry
-
-Several categories of ciphersuites are discouraged for general use and
-are maked as "D".
-
-Ciphersuites that use NULL encryption do not provide the confidentiality
-normally expected of TLS. Protocols and applications are often designed
-to require confidentialy as a security property. These
-ciphersuites MUST NOT be used in those cases.
-
-Ciphersuites marked as EXPORT use weak ciphers and were deprecated in
-TLS 1.1 {{!RFC4346}}.
-
-Cipher suites maked as anon do not provide any authentication and are
-vulnerable to man-in-the-middle attacks and are deprecated in TLS 1.1
-{{!RFC4346}}.
-
-RC4 is a weak cipher and is deprecated in {{!RFC7465}}.
-
-DES and IDEA are not considered secure for general use and are deprecated
-in {{!RFC5469}}.
-
-In order to refect the changes in the Recommended column allocation,
-IANA SHALL update the TLS ExtensionType Values registry as follows:
-
-- Change the registration procedure to:
-
-~~~
-    Values with the first byte in the range 0-254 (decimal) are
-    assigned via Specification Required [RFC8126].  Values with the
-    first byte 255 (decimal) are reserved for Private Use [RFC8126].
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the "Recommended" column with the changes as listed below.  Entries
-  keep their existing "Y" and "N" entries except for the entries in following table.
-  A reference to this document SHALL be added to these entries. This document does not
-  make any changes to the DTLS-OK column.
-
-| Value | Cipher Suite Name                             | Recommeded |
-|:------|:---------------------------------------------|-----------:|
-| 0x00,0x01	| TLS_RSA_WITH_NULL_MD5             |   D  |
-...
-
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-
-# TLS Supported Groups
-
-In order to refect the changes in the Recommended column allocation,
-IANA SHALL update the TLS Supported Groups registry as follows:
-
-- Update the registration policy to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the "Recommended" column with the changes as listed below.  Entries
-  keep their existing "Y" and "N" entries except for the entries in following table.
-  A reference to this document SHALL be added to these entries.
-
-| Value | Curve | Recommended |
-|:-|:-|-:|
-| 1 |sect163k1 | D |
-...
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-- Replace the registry range table note column for the 0-255, 512-65535
-  range with "Unallocated".
-
-# TLS Exporter Labels Registry
-
-This document updates the registration procedure for the TLS Exporter
-registry and updates the Recommended column allocation.
-IANA SHALL update the TLS Exporter Labels Registry as follows:
-
-- Change the registration procedure from Specification Required to
-  Expert Review and update it to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Entries keep their existing Recommended column "Y" and "N" entries
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-- update the note on the role of the expert reviewer as follows.
-
-Note:
-: The role of the designated expert is described in {{RFC8447, Section 17}}.
-Even though this registry does not require a specification, the
-designated expert {{!RFC8126}} will strongly encourage registrants
-to provide a link to a publicly available specification. An
-Internet-Draft (that is posted and never published as an RFC)
-or a document from another standards body, industry consortium,
-university site, etc. are suitable for these purposes.
-The expert may provide more in-depth reviews, but their approval
-should not be taken as an endorsement of the exporter label.  The
-expert also verifies that the label is a string consisting of
-printable ASCII characters beginning with "EXPORTER".  IANA MUST
-also verify that one label is not a prefix of any other label.
-For example, labels "key" or "master secretary" are forbidden.
-
-
-# TLS Certificate Types
-
-In order to refect the changes in the Recommended column allocation,
-IANA SHALL update the the TLS Certificate Types registry as follows:
-
-- Change the registration procedure to:
-
-~~~
-    Values in the range 0-223 (decimal) are assigned via Specification
-    Required [RFC8126]. Values in the range 224-255 (decimal) are
-    reserved for Private Use [RFC8126]. Setting a "Recommended" column
-    value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Entries keep their existing Recommended column "Y" and "N" entries.
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-
-# TLS HashAlgorithm Registry
-
-Though TLS 1.0 and TLS 1.1 were deprecated {{!RFC8996}}, TLS 1.2 will
-be in use for some time. In order to refect the changes in the Recommended
-column allocation, IANA SHALL update the TLS HashAlgorithm Registry
-registry as follows:
-
-- Update the registration procedure to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the TLS HashAlgorithm registry to add a "Recommended" column
-  as follows:
-
-| Value | Descsription | Recommended |
-|:----  |:-------------|------------:|
-| 0 | none | Y |
-...
-
-- Add note on the recommended column with text in {{rec-note}}.
-
-
-# TLS SignatureAlgorithm registry
-
-Though TLS 1.0 and TLS 1.1 were deprecated {{!RFC8996}}, TLS 1.2 will
-be in use for some time. In order to refect the changes in the Recommended
-column allocation, IANA SHALL update the TLS SignatureAlgorithm registry
-registry as follows:
-
-- Update the registration procedure to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the TLS SignatureAlgorithm registry to add a "Recommended"
-  column as follows:
-
-|Value | Descsription | Recommended |
-|:-----|:-------------|------------:|
-| 0 | anonymous| N |
-...
-
-- Add note on the recommended column with text in {{rec-note}}.
-
-# TLS ClientCertificateTypes registry
-
-Though TLS 1.0 and TLS 1.1 were deprecated {{!RFC8996}}, TLS 1.2 will
-be in use for some time. In order to refect the changes in the Recommended
-column allocation, IANA SHALL update the  TLS ClientCertificateTypes
-registry as follows:
-
-- Update the registration procedure to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Update the TLS ClientCertificateTypes registry to add a "Recommended"
-column as follows:
-
-| Value | Descsription | Recommended |
-|:------|:-------------|------------:|
-| 1 | rsa_sign | Y |
-...
-
-- Add note on the recommended column with text in {{rec-note}}.
-
-# TLS PskKeyExchangeMode registry
-
-In order to refect the changes in the Recommended column allocation,
-IANA SHALL update the TLS PskKeyExchangeMode registry as follows:
-
-- Update the registration procedure to include:
-
-~~~
-    Setting a "Recommended" column value to "Y" or "D" requires Standards
-    Action [RFC8126]. Any state transition to or from a "Y" or "D"
-    value requires IESG Approval.
-~~~
-
-- Add a reference to this document under the reference heading.
-
-- Entries keep their existing recommended column "Y" and "N" entries.
-
-- Update note on the recommended column with text in {{rec-note}}.
-
-# TLS SignatureScheme registry
-
-IANA is requested to add a reference to this document under the reference heading.
-
-# Adding "Comment" Column
-
-IANA is requested to add a "Comment" column to the following registries:
-
-- TLS ExtensionType Values
-- TLS Application-Layer Protocol Negotiation (ALPN) Protocol IDs
-- TLS CachedInformationType Values
-- TLS Certificate Compression Algorithm IDs
-- TLS Cipher Suites
-- TLS ContentType
-- TLS EC Point Formats
-- TLS EC Curve Types
-- TLS Supplemental Data Formats (SupplementalDataType)
-- TLS UserMappingType Values
-- TLS Authorization Data Formats
-- TLS Heartbeat Message Types
-- TLS Heartbeat Modes
-- TLS SignatureScheme
-- TLS PskKeyExchangeMode
-- TLS KDF Identifiers
-
-This list of registries is all registries that do not already have a
-"Comment" or "Notes" column or that were not orphaned by TLS 1.3.
-
-# Expert Review of Current and Potential IETF and IRTF Documents
-
-The intent of the Specification Required standard for TLS code points
-is to allow for easy registration for code points associated with
-protocols and algorithms that are not being actively developed inside
-IETF or IRTF. When TLS-based technologies are being developed inside
-the IRTF/IETF they should be done in coordination with the TLS WG in
-order to provide appropriate review. For this reason, unless the TLS WG
-chairs indicate otherwise via email, designated
-experts should decline code point registrations for documents which
-have already been adopted or are being proposed for adoption by IETF
-working groups or IRTF research groups.
-
-
-# Security Considerations
-
-The change to Specification Required from IETF Review lowers the amount
-of review provided by the WG for cipher suites and supported groups.
-This change reflects reality in that the WG essentially provided no
-cryptographic review of the cipher suites or supported groups.  This
-was especially true of national cipher suites.
-
-Recommended algorithms are regarded as secure for general use at the
-time of registration; however, cryptographic algorithms and parameters
-will be broken or weakened over time.  It is possible that the
-"Recommended" status in the registry lags behind the most recent advances
-in cryptanalysis.  Implementers and users need to check that the
-cryptographic algorithms listed continue to provide the expected level
-of security.
+# Specification Required {#spec-required}
+
+The intent of the Specification Required standard for cryptographic code points
+is to allow for relatively easy registration of code points associated with
+protocols and algorithms that are being developed outside of
+IETF or IRTF. A key requirement is that the specification of the semantics
+must be "permanent and readily available" as described
+in {{RFC8126, Section 4.6}}.
+The defining document should make explicit if Internet-Draft
+documents qualify, as Section 4.6 does not say.
+Authors of the defining document should read the entire {{RFC8126}}
+and make sure their descriptions and requirements are clear.
+
+Note that the IESG picks the Designated Experts, so they should not be named
+in the defining document. Instead, specify the number of experts and how many
+are required to approve.  Phrases like "one of two" or "two of three" are
+common requirements for approval.  The defining document SHOULD NOT suggest
+one person, to avoid a single point of failure.
 
 Designated experts ensure the specification is publicly available.  They may
 provide more in-depth reviews.  Their review should not be taken as an
-endorsement of the cipher suite, extension, supported group, etc.
+endorsement of the new registry entry.
 
+When the work is done by an IETF WG or IRTF RG, that group should
+collaborate with the defining WG in order to provide appropriate review.
+A WG that defines a cryptographic registry MAY wish to include text like
+the following in its instructions to the experts to enforce this
+behavior.  Such instructions should appear in the defining document.
+
+DE Instructions
+: Unless the WG chairs indicate otherwise via email, the Designated Experts
+should decline code point registrations for documents which have already been
+adopted or are being proposed for adoption by IETF working groups or IRTF
+research groups.
+
+# Suggested Columns
+
+Here is a summary of the recommendation; each column is described in its
+own sub-section below. The following paragraph can be used as a
+template when defining a registry.
+
+The columns are defined as follows:
+
+- Value (required):  The value that appears in the data structure or protocol.
+Additional sentences that describe the format, such as fixed-number of
+bytes, text string, etc., should be added.
+
+- Description (required): A brief desription, often pointing to a section
+in the defining Reference.
+
+- Reference (required): The publication defining the entry.
+
+- Recommended (required): Whether or not this value is recommended for
+general use.
+
+- Comments (optional): Text that may be added to explain transitions,
+or similar useful information.
+
+## The "Value" column {#value-column}
+
+The "Value" column is the identifier for the cryptographic items in the
+registry. Every value SHOULD be unique within the registry.  Values
+SHOULD ONLYy be re-used because of earlier mistakes and if they still
+guarantee there is little to no chance of confusion.
+
+Sometimes values are inherently unique. Example of this include ISO
+Object Identifiers, and string identifiers like those in OpenSSH that
+allow an identifier to have an "@domain-name" appended.  It is up to the
+Working Group to decide if such values should be in a registry. Values
+that would have a Recommended value of "Y" probably SHOULD appear.
+
+In some registries, such as TLS Cipher Suites {{TLSREG}}, the values are
+one or more bytes, while NTP uses a single multi-byte value, while JOSE
+uses short text names ({{JOSEREG}}), such as "s5c" for an X.509
+certificate chain.
+
+If a name is not inherently unique, the defining WG MAY wish to set
+aside a specific range or values for "Experimental or Private Use." It
+does not seem necessary to separate "Experimental" from the "Private
+Use" concept.  An example of private string identifiers from
+{{!RFC6838}}, Sections 3.2 and 3.4, are the previxes "vnd." and "x.",
+respectively.
+
+Another reason for reserved values is for "greasing" the protocol,
+to help prevent ossification by nework devices that do not allow
+protocols to grow and evolve. See {{?RFC8701}} for more information.
+Such entries are often makred as "Reserved" in their Description, and
+a reference to "RFC8710" in their reference.
+
+## The "Description" colummn {#description-column}
+
+The "Description" is a brief description of the item.
+In many cases, it will be a short reminder text that should serve
+as a "guidepost" to the reference documentation, as done with the
+NTP Extension Field Types in the NTP Registries, {{NTPREG}}.
+
+## The "Reference" column {#reference-column}
+
+For work done in the IETF or IRTF, the "Reference" entry will almost
+always point to a RFC about to be published.
+For work done outside these organizations, the reference should be
+a URL that the Designated Experts have verified to meet the requirements
+of {{spec-required}}.
+
+## The "Recommended" column {#recommended-column}
+
+This document specifies that a "Recommended" column be defined, with
+three values that correspond to yes, no, and no opinion.  Specifying an
+initial value of "Y" or "D" in this column MUST require Standards Action
+{{!RFC8126}} for the defining RFC, otherwise the the field MUST be empty
+or have the value of "N".
+Not all
+items defined in Standards Track RFCs need to be set to "Y" or "D".
+
+The entry SHOULD also be left blank for values that are unassigned or
+reserved.
+
+Y
+: Indicates that the IETF has consensus that the item is RECOMMENDED. This
+only means that the associated mechanism is fit for the purpose for which it
+was defined.  Careful reading of the documentation for the mechanism is
+necessary to understand the applicability of that mechanism.  When the IETF
+recommends mechanisms that have limited applicability, the working SHOULD
+provide applicability statements that describe any limitations of the
+mechanism or necessary constraints on its use.
+
+D
+: Indicates that the item is discouraged. This marking could be used
+to identify mechanisms that might result in problems if they are used,
+such as a weak cryptographic algorithm or a mechanism that might cause
+interoperability problems in deployment. Implementers SHOULD consult the
+linked references associated with the item to determine the conditions
+under which it SHOULD NOT or MUST NOT be used.
+
+N
+: Indicates that the item has not been evaluated by the IETF and that
+the IETF has made no statement about the suitability of the associated
+mechanism. This does not necessarily mean that the mechanism is flawed,
+only that no consensus exists.  The IETF might have consensus to leave
+an items marked as "N" on the basis of it having limited applicability
+or usage constraints.
+
+Once an entry is created, there are specific requirements to change
+the value. Cryptographic algorithms become weaker over time, as more
+attacks on them are defined.
+Any state transition to or from a "Y" or "D" value requires IESG Approval.
+
+The following is text that can be used in the notes section of
+any registry that has a "Recommended" column:
+
+Note
+: If the "Recommended" column is set to "N", it does not necessarily mean
+that it is flawed; but rather that the item either has not
+been through the IETF consensus process, has limited applicability, or
+is intended only for specific use cases.  If the "Recommended" column
+is set to "D" the item is discouraged and SHOULD NOT or MUST NOT be used.
+Defining a "Recommended" column value to "Y" or "D" requires Standards
+Action [RFC8126]. Any state transition to or from a "Y" or "D"
+value requires IESG Approval.
+
+## The "Comments" Column {#comments-column}
+
+This is a brief free-text column that can be used to describe
+transitions or limits on usage.
+Examples include:
+
+- Obsoleted by RFC xxx
+- Only for TLS 1.3 or later
+
+# Security Considerations
+
+Using Specification Required rather than IETF Review does, admittedly,
+lower the theoretical amount of review provided by a WG.  Experience has
+shown, however, that WG members generally provided no cryptographic
+review, especially in the case of referring to national cipher suites.
+
+Recommended algorithms are regarded as secure for general use at the time of
+registration, Over time, however, cryptographic algorithms and parameters
+will be broken or weakened.  It is possible that the "Recommended" status in
+the registry lags behind the most recent advances in cryptanalysis.
+Implementers and users need to check that the cryptographic algorithms listed
+continue to provide the expected level of security.
 
 # IANA Considerations
 
-This document is entirely about changes to TLS-related IANA registries.
-
+This document is entirely about best practices for IANA-maintained
+cryptographic registries.
+It does not define any new registries but provides guidance to
+those who need to do so.
 
 --- back
