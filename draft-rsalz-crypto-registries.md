@@ -125,7 +125,7 @@ The columns are defined as follows:
 Additional sentences that describe the format, such as fixed-number of
 bytes, text string, etc., should be added.
 
-- Description (required): A brief desription, often pointing to a section
+- Description (required): A brief description, often pointing to a section
 in the defining Reference.
 
 - Reference (required): The publication defining the entry.
@@ -140,7 +140,7 @@ or similar useful information.
 
 The "Value" column is the identifier for the cryptographic items in the
 registry. Every value SHOULD be unique within the registry.  Values
-SHOULD ONLYy be re-used because of earlier mistakes and if they still
+SHOULD only be re-used because of earlier mistakes and if they still
 guarantee there is little to no chance of confusion.
 
 Sometimes values are inherently unique. Example of this include ISO
@@ -162,12 +162,12 @@ Use" concept.  An example of private string identifiers from
 respectively.
 
 Another reason for reserved values is for "greasing" the protocol,
-to help prevent ossification by nework devices that do not allow
+to help prevent ossification by network devices that do not allow
 protocols to grow and evolve. See {{?RFC8701}} for more information.
-Such entries are often makred as "Reserved" in their Description, and
+Such entries are often marked as "Reserved" in their Description, and
 a reference to "RFC8710" in their reference.
 
-## The "Description" colummn {#description-column}
+## The "Description" column {#description-column}
 
 The "Description" is a brief description of the item.
 In many cases, it will be a short reminder text that should serve
